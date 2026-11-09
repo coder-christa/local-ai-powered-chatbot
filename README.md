@@ -5,6 +5,62 @@ A privacy-first, locally deployed AI chatbot built with Python, FastAPI, Streaml
 This system is designed for environments where cloud-based AI is not viable due to data sensitivity, unreliable connectivity, or cost constraints. It enables fully local AI interaction with no external API calls, making it suitable for public sector, digital inclusion, and privacy-sensitive use cases.
 
 ---
+##Updates by coder-christa, this is a forked version of the main branch of the code by Jerry Iriri.
+
+##why did coder-christa fork this project? 
+
+I was looking for a project to have a private chatbot on my local host for code assistance.
+The local chatbots I was using previously had updates and suddenly were auto executing code and other features I didn't agree with for safety and other concerns.
+
+This code fit the bill despite a bit of friction and troubleshooting of the docker containers. It does exactly what I want and need.
+
+I hope the original developer pulls some of this into their code base if they're still working on this, or it at least minimizes friction for 
+another person with similar concerns.
+
+
+##Changes coder-christa made:
+
+I found a few issues with the docker compose setup and made a few changes accordingly.
+
+--Changed the included file chat_history.db from a directory to a empty file. 
+This fixes errors when sqlite is expecting that file the /app directory in the docker container.
+Originally it was throwing errors when it was a directory in the original code base after being copied to the docker container.
+
+--Hardcoded in the configs.py to use qwen2.5-coder:1.5b model.
+
+This is the model i'm using locally. 
+
+It was causing a 404 error when a different ollama model was used.
+The readme states below it can use other models, but the hardcoded variables don't allow other models to be used as-is.
+
+This can be dynammically set in other ways to change it after build time, but this satisfies my purposes for now.
+
+You will still need to execute docker exec -it chatbot-ollama ollama pull qwen2.5-coder:1.5b similar to setup below,
+however it uses the qwen2.5 model instead.
+
+New process to build this project:
+
+update the OLLAMA_MODEL: in config.py to the desired model. This can be any ollama compatible model
+Docker compose up --build
+execute docker exec -it chatbot-ollama ollama pull *name of the model you wish to pull matching the config.py variable
+
+These steps will place the files in the directory, but the changed config.py will allow the code to find the model files without throwing an error.
+
+--updated the included dockerfile
+
+Some key pip installs were missing and causing errors in the backend container. 
+Those are resolved with the updated pip installs included in the updated Dockerfile.
+
+--updated import statements in the backend/app/main.py
+
+Some of the libraries were updated recently and the import statements weren't valid with the modules being used.
+The errors were resolved with the updates to the import statements
+
+
+The rest of the readme is by the original developer below. I left it fully intact.
+
+enjoy!
+
 
 ## Why I Built This
 
