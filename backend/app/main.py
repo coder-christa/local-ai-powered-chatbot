@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from langchain_community.chat_models import ChatOllama
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.schema import HumanMessage, SystemMessage, AIMessage
+from langchain_core.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
+from .config import settings
 from .config import settings
 from .database import get_db, init_db, ChatMessage
 from .models import Message, ChatRequest, MessageCreate
