@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
@@ -24,6 +23,10 @@ EXPOSE 8501
 
 # Define environment variable
 ENV PATH="/app/.venv/bin:$PATH"
+
+#updated pip installs for backend container to correct import errors.
+RUN /usr/local/bin/pip --python /app/.venv/bin/python install langchain \
+&& /usr/local/bin/pip --python /app/.venv/bin/python install langchain-community
 
 # Run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
